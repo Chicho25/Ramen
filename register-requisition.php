@@ -115,7 +115,7 @@
         <div class="col-lg-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>Register Material Requisition</h5>
+                        <h5>Registrar Requisicion</h5>
                     </div>
                     <div class="ibox-content">
                 	<form class="form-horizontal" data-validate="parsley" method="post"   enctype="multipart/form-data">
@@ -124,7 +124,7 @@
                                     echo $message;
                           ?>
                             <div class="form-group required">
-                              <label class="col-lg-4 text-right control-label font-bold">Warehouse</label>
+                              <label class="col-lg-4 text-right control-label font-bold">Localidad</label>
                               <div class="col-lg-4">
                                   <select class="chosen-select form-control" name="warehouse" id="warehouse" required="required" >
                                     <?PHP
@@ -141,7 +141,7 @@
                               </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-lg-4 text-right control-label font-bold">Request Date</label>
+                                <label class="col-lg-4 text-right control-label font-bold">Fecha de la solicitud</label>
                                 <div class="col-lg-4" id="data_1">
                                     <div class="input-group date">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -151,7 +151,7 @@
                                 </div>
                             </div>
                             <div class="form-group required">
-                              <label class="col-lg-4 text-right control-label font-bold">Work Order</label>
+                              <label class="col-lg-4 text-right control-label font-bold">Orden de trabajo</label>
                               <div class="col-lg-4">
                                 <select class="chosen-select form-control"  name="wono">
                                   <option value="">Seleccionar</option>
@@ -169,13 +169,13 @@
                               </div>
                             </div>
                             <div class="form-group required">
-                              <label class="col-lg-4 text-right control-label font-bold">Department</label>
+                              <label class="col-lg-4 text-right control-label font-bold">Departamento</label>
                               <div class="col-lg-4">
                                 <input type="text" class="form-control" required=""   name="department">
                               </div>
                             </div>
                             <div class="form-group required">
-                              <label class="col-lg-4 text-right control-label font-bold">Request By</label>
+                              <label class="col-lg-4 text-right control-label font-bold">Solicitado por</label>
                               <div class="col-lg-4">
                                 <select class="chosen-select" data-placeholder="---select---"  name="requestby" required="required" >
                                   <option value="">---select---</option>
@@ -194,7 +194,7 @@
                               </div>
                             </div>
                             <div class="form-group required">
-                              <label class="col-lg-4 text-right control-label font-bold">Notes</label>
+                              <label class="col-lg-4 text-right control-label font-bold">Notas</label>
                               <div class="col-lg-4">
                                 <textarea rows="7" class="form-control" cols="44" name="notes" required=""  placeholder=""></textarea>
                               </div>
@@ -203,7 +203,7 @@
                             <label class="col-lg-4 text-right control-label font-bold"></label>
                             <div class="col-lg-4">
                               <a data-toggle="modal" class="btn btn-primary" onclick="addReqItem()"  data-target="#myModal">
-                              Add Item
+                              Agregar Item
                               </a>
                             </div>
                             <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
@@ -211,7 +211,7 @@
                                 <div class="modal-content animated bounceInRight">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                            <h4 class="modal-title">Add Item</h4>
+                                            <h4 class="modal-title">Agregar Item</h4>
 
                                         </div>
                                         <div class="modal-body">
@@ -231,12 +231,12 @@
                                                       <?php
                                                       }
                                                       ?>
-                                                      <option value="-1">Not In Inventory</option>
+                                                      <option value="-1">No en inventario</option>
                                                     </select>
                                                 </div>
                                               </div>
                                               <div class="form-group required" id="itmdesc" style="display: none;">
-                                                <label class="col-lg-4 text-right control-label font-bold">Description</label>
+                                                <label class="col-lg-4 text-right control-label font-bold">Descripcion</label>
                                                 <div class="col-lg-4">
                                                   <input type="text" class="form-control"  name="description" id="description">
                                                 </div>
@@ -244,17 +244,17 @@
                                               <div class="form-group required">
                                                 <label class="col-lg-4 text-right control-label font-bold">Stock</label>
                                                 <div class="col-lg-4">
-                                                  <input type="text" class="form-control" readonly=""    name="qtyinhand" id="qtyinhand">
+                                                  <input type="text" class="form-control" readonly="" name="qtyinhand" id="qtyinhand">
                                                 </div>
                                               </div>
                                               <div class="form-group required">
-                                                <label class="col-lg-4 text-right control-label font-bold">Quantity</label>
+                                                <label class="col-lg-4 text-right control-label font-bold">Cantidad</label>
                                                 <div class="col-lg-4">
                                                   <input type="text" class="form-control"    name="quantity" id="quantity">
                                                 </div>
                                               </div>
                                               <div class="form-group required">
-                                                <label class="col-lg-4 text-right control-label font-bold">Unit of Measure</label>
+                                                <label class="col-lg-4 text-right control-label font-bold">Unidad de medida</label>
                                                 <div class="col-lg-4">
                                                   <select class="form-control" name="measureunit" id="measureunit">
                                                       <option value="cm">cm</option>
@@ -268,8 +268,8 @@
                                         </div>
 
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-                                            <button type="button" onclick="getReqItemDetail()" class="btn btn-primary">Add</button>
+                                            <button type="button" class="btn btn-white" data-dismiss="modal">Cerrar</button>
+                                            <button type="button" onclick="getReqItemDetail()" class="btn btn-primary">Agregar</button>
                                         </div>
                                     </div>
                                 </div>
@@ -280,12 +280,12 @@
                               <thead>
                                 <tr>
                                   <th>Item Id</th>
-                                  <th>Item Description</th>
+                                  <th>Item Descripcion</th>
                                   <th>Stock</th>
-                                  <th>Quantity</th>
-                                  <th>Buy</th>
-                                  <th>Unit of Measure</th>
-                                  <th>ACTION</th>
+                                  <th>Cantidad</th>
+                                  <th>Comprar</th>
+                                  <th>Unidad de medida</th>
+                                  <th>ACCION</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -294,8 +294,8 @@
                          </div>
                           <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-4">
-                                <button class="btn btn-primary" name="submitUser" type="submit">Save</button>
-                                <button class="btn btn-white" type="button" onclick="window.location='home.php'">Cancel</button>
+                                <button class="btn btn-primary" name="submitUser" type="submit">Guardar</button>
+                                <button class="btn btn-white" type="button" onclick="window.location='home.php'">Cancelar</button>
                             </div>
                           </div>
                     </form>

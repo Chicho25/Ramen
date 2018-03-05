@@ -8,7 +8,6 @@
     include("include/defs.php");
     $loggdUType = current_user_type();
 
-
     include("header.php");
 
     if(!isset($_SESSION['USER_ID']))
@@ -31,32 +30,28 @@
                         "qty_in_hand" => $qtyinhand,
                         "qty_new" => $addqty,
                         "reason" => $reason,
-                        "entry_by" => $_SESSION['USER_ID']
+                        "entry_by" => $_SESSION['USER_ID'],
+                        "value"=>$price
                        );
 
           $nId = InsertRec("inventory_adjustment", $arrVal);
-
-
 
           if($nId > 0)
           {
 
               $message = '<div class="alert alert-success">
                     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                      <strong>Inventory adjustment created successfully</strong>
+                      <strong>Inventario ajustado</strong>
                     </div>';
           }
           else
           {
 
-
             $message = '<div class="alert alert-danger">
                   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                    <strong>Inventory adjustment not created</strong>
+                    <strong>Error al ajustar el inventario</strong>
                   </div>';
           }
-
-
 
      }
 ?>
@@ -69,7 +64,7 @@
         <div class="col-lg-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>Inventory Adjustment</h5>
+                        <h5>Ajuste de Inventario</h5>
                     </div>
                     <div class="ibox-content">
                 	<form class="form-horizontal" data-validate="parsley" method="post"   enctype="multipart/form-data">
@@ -78,7 +73,7 @@
                                     echo $message;
                           ?>
                             <div class="form-group required">
-                              <label class="col-lg-4 text-right control-label font-bold">Warehouse</label>
+                              <label class="col-lg-4 text-right control-label font-bold">Localidad</label>
                               <div class="col-lg-4">
                                   <select class="chosen-select form-control" name="warehouse" id="warehouse" required="required" onchange="getQtyInHand()">
                                     <?PHP
@@ -113,13 +108,13 @@
                               </div>
                             </div>
                             <div class="form-group required">
-                              <label class="col-lg-4 text-right control-label font-bold">Reference</label>
+                              <label class="col-lg-4 text-right control-label font-bold">Referencia</label>
                               <div class="col-lg-4">
                                 <input type="text" class="form-control" required=""   name="reference">
                               </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-lg-4 text-right control-label font-bold">Date</label>
+                                <label class="col-lg-4 text-right control-label font-bold">Fecha</label>
                                 <div class="col-lg-4" id="data_1">
                                     <div class="input-group date">
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -129,13 +124,13 @@
                                 </div>
                             </div>
                             <div class="form-group required">
-                              <label class="col-lg-4 text-right control-label font-bold">Adjustment Order#</label>
+                              <label class="col-lg-4 text-right control-label font-bold">Ajuste Orden#</label>
                               <div class="col-lg-4">
                                 <input type="text" class="form-control" required="" readonly="" value="<?php echo maxAdjNumber()?>"   name="adjorderno">
                               </div>
                             </div>
                             <div class="form-group required">
-                              <label class="col-lg-4 text-right control-label font-bold">Adjustment Qty By</label>
+                              <label class="col-lg-4 text-right control-label font-bold">Ajuste de cantidad por</label>
                               <div class="col-lg-4">
                                 <input type="text" class="form-control" required="" onblur="addAdjustQty()"   name="adjqty" id="adjqty">
                               </div>
@@ -144,29 +139,35 @@
                               <label class="col-lg-4 text-right control-label font-bold"></label>
                               <div class="col-lg-8 no-padding">
                                 <div class="col-lg-6 no-padding">
-                                  <label class="col-lg-12 text-left control-label font-bold" style="text-align: center !important;">Qty in hand</label>
+                                  <label class="col-lg-12 text-left control-label font-bold" style="text-align: center !important;">Cantida a la mano</label>
                                   <div class="col-lg-12">
                                     <input type="text" readonly="" class="form-control" required=""   name="qtyinhand" id="qtyinhand">
                                   </div>
                                 </div>
                                 <div class="col-lg-6 no-padding">
-                                  <label class="col-lg-12 text-right control-label font-bold" style="text-align: center !important;">New Qty</label>
+                                  <label class="col-lg-12 text-right control-label font-bold" style="text-align: center !important;">Nueva Cantidad</label>
                                   <div class="col-lg-12">
                                     <input type="text" class="form-control" readonly="" required=""   name="addqty" id="addqty">
+                                  </div>
+                                </div>
+                                <div class="col-lg-6 no-padding">
+                                  <label class="col-lg-12 text-right control-label font-bold" style="text-align: center !important;">Precio</label>
+                                  <div class="col-lg-12">
+                                    <input type="text" class="form-control" required="" name="price" id="addqty">
                                   </div>
                                 </div>
                               </div>
                             </div>
                             <div class="form-group required">
-                              <label class="col-lg-4 text-right control-label font-bold">Reason to adjust</label>
+                              <label class="col-lg-4 text-right control-label font-bold">Motivo para ajustar</label>
                               <div class="col-lg-4">
                                 <textarea rows="7" class="form-control" cols="44" name="reason" required=""  placeholder=""></textarea>
                               </div>
                             </div>
                           <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-4">
-                                <button class="btn btn-primary" name="submitUser" type="submit">Save</button>
-                                <button class="btn btn-white" type="button" onclick="window.location='home.php'">Cancel</button>
+                                <button class="btn btn-primary" name="submitUser" type="submit">Guardar</button>
+                                <button class="btn btn-white" type="button" onclick="window.location='home.php'">Cancelar</button>
                             </div>
                           </div>
                     </form>
