@@ -1,0 +1,196 @@
+----------Software should be in english and spanish
+
+1) Email id will not be unique on New Contact Form
+2) Customer list will be show on Contact form
+3) Third Party id will be manual enter on Contact form also
+
+----------Vehicle New Form-----------------------------
+4) Type drop down will come from setup on Vehicle New Form
+5) the first is the checkbox to validate if these rates applies on first Two Tabs on Vehicle New Form
+6) in fluids Tab on bare rental Tab and manned rental Tab all are required except the checkbox
+7) In Detail Tab name, make, model, type and status are mandatory only
+8) On Wheels & Tires Tab all fields optional and   on Telematics Tab all fields optional except primary MEter (radio button, just a single select option)
+9) On Filter tab all fields optional
+10) On Document Tab upload differents type of file related with the vehicle and the list shows these files and can viewed and download
+and delete permanetly
+
+------------New Employe Form-------------------------
+11) on Detail Tab  job title, cellphone, third party are optional
+12) on Qualification Tab all fields optional
+13) on Labor Rates tab all fields are mandatory if any 1 qualification selected  OTHERWISE Optional
+14) on Sales Person tab if salesperson option is check then commission field is mandatory, with these option 
+    we can calculate the amount of commission the sales person will win
+15) on Driver Information tab if driver option is check then other fields are mandatory
+16) on document tab same like vehicle document tab
+
+----------Supplier New Form-----------------------------
+17) name, phone, contact, email, country, status, are mandatory
+
+----------Service New Form-----------------------------
+18) description, Price, tax, status are mandatory
+19) yes or no option in Tax drop down
+
+----------Company New Form--------------------------
+20) title of 1.30.1 is Company list and all fields are mandatory on new company form 
+21) on Logo Tab its an optional
+22) on outbound email all fields mandatory
+
+-----------Country-------------------------
+23) there will be country id and name field only and list page and edit page just like 1.30.1
+
+----------Job New Form--------------------------
+24) on Info Tab start date, status, estimate, these 3 without time field
+    Status options are Scheduled Job, Completed Job, Potential Job, Cancelled Job, Maintenance, 
+           Completed Maintenance, Appointment, Completed Appointment, Vacation, Completed Vacation
+25) on Site/Maps tab contact, phone and address are mandatory but map will have option to move the point on the map and that will be called address
+26) on Resource Tab 1 row mandatory and when you click "add ítem of Equipment or Personnel" first appears the left Dropdown  where vehicle type as optiongroup and vehicle list as options
+    and on right side employee type option group and employee name as options 
+27) on Lift tab all are mandatory fields and in the Units dropdown options are US and Metrics
+28) on Permits tab the options are: not needed, not ordered, on order, received
+all mandatory
+29) on Notes tab job description mandatory
+
+----------1.42. Resource Calendar--------------------------
+30) need to discuss for make more simple and clear
+
+----------service aggreement--------------------------
+31) eliminate the buttons and service agreement dropdown, its setup all fields mandatory
+----------Terms of condition--------------------------
+32) same like service agreemnet and all fields mandatory
+----------Perposal notes--------------------------
+33) all fields mandatory
+----------New Prospect--------------------------
+34) all fields mandatory except the last two, Project amount and estimated closing date
+    in the first dropdown ( How did he found ) options are By email, By reference, by Phone, by visiting, by cellphone
+the label it should be = Media
+    in the second file show all customers in popup and should autocomplete
+    in the third field show contacts of selected customer and should be only select single contact and customer
+   when user click on button convert in opportunity then it will redirect to new opportunity form with the filled data of prospect and show on new oppertnity form
+   there will be field in table status (Prospect ,Oopportunity)
+   on Prospect list page first arrow button is convert in opportunity
+   the second green button will show if all fields are filled
+
+----------New Opportunity--------------------------
+35) all fields mandatory
+----------Engineering Form--------------------------
+36) all mandatory fields except customers obligations, notes 1,2,3, and customer service agreement
+    always enginerring record come from convert from opportunity to engeering
+    in engineering have two options to save and complete later, to save finish and when click finish it will change of status
+to quote and appears on quote list , and hide on enginerring list
+----------New CRM Quote----------------------------
+37) this form will open from list on click green button
+    customer and contact will not be dropdown and eliminate the add customer and add contact button
+    Green button will show  on first time when comes from engineering to quote
+    orange button will show when you save and complete later
+   these fields are mandatory  customer, contact, contact email, Project title, salesperson
+   slaesperson and email will be editable , salesperson who captures the info from opportunity
+   from the username , important every salesperson only could view his records, with some exceptions like admin user
+   Add vehicle , Add service will open popup -----1.54 is Popup design of Add Vehicle, -----1.55 is Popup design of Service and when user add any vehicle or service 
+   then orange button will show for add Note manually in popup with 2 fields(1.56)
+   in vehicle, is a dropdown to select, and then the type of rate= manned or bare like page 1.12.1 and 1.13.1
+then select the category of rate= by hour, daily, yearly, and type the minimun hour per Project and mínimum hour per day to calculate the estimate by formula
+are different products
+the services are more simple, are transportation 100$
+   Buttons
+   preview will show a draft of the quote to print
+   finish will convert in another status will convert from status quote to status tracing
+   and save is to complete later
+   the status from quote to tracing
+
+   when user fill quote and click on Finish button then status will change from quote to tracing and send the quote PDF to the customer by email also
+----------Tracking List----------------------------
+38) Record come from quote to Tracking List , these are the status image downloaded on folder you can select in tracing 
+    when click Green button opens tracing history page for add and see history
+    yellow button will show when status approved when cick yellow button then job will be create 1.36.1
+----------New Appointment----------------------------
+39) all fields are mandatory and Invitations are list of employees
+    on list page only orange edit button and need to discuss other buttons also
+----------New Fuel Entry----------------------------
+40) All mandatory except reference and partial fuelup and in Vehicle section dropdown options are Carrier or upper
+    when user select any vehicle then Odometer and engine hour depents on the selection on vehicle and will show values
+    The green button is for view the info in the new fuel entry
+----------New Work Order Entry----------------------------
+41) All are mandatory fields Except all Especialist
+    work order number is auto number
+    Created on is current date but can change
+    assigned date similar shows current day but can be change to another
+    and completion date should be manually entrer
+    Dropdown
+       type of work order = repair, maintenance, improvements
+       status= open, Waiting for parts - Down, Waiting for parts - Rolling
+       vehicle section = carrier , upper
+       priority= urgent, important
+       specialist = list of group of employes 
+       person in charge = is the same as specialist
+   Related Isue are  issue is related with the vehicle and come from Issue list, which issues are open , 
+   if any issue check in this related issue then it will be closed
+
+----------Fleet Issue New----------------------------
+42) all fields mandatory
+    reported on current date and can change
+    reported by list of employess by group
+----------Service Reminder List----------------------------
+43) all fields mandatory except Meter Internal and then must enter Meter Threshold OR Time interval and then Time threshold
+    in the dropdown of threshold options are day, week, month, year
+    interval and threshold will be integer manually and cant be equal or greater than the interval
+    Email subscriber user are the email to alert when it get equal to the Threshold, interval
+    on list there are two columns Every and Due
+    Every forumla 
+       every is take from the creation in the fields METER INTERVAL or TIME INTERVAL
+    Due formula
+      - last odometer or hour-meter when is create the reminder + every = due
+      -20 + 60 = 40
+----------New Renewal Reminder entry----------------------------
+44) very similar to service reminder
+    all are mandatory fields
+    on list page Type is Reason field and change label on list
+----------On Fleet Document----------------------------
+45) new field will be add of vehicle list to assosiate uploaded files
+
+----------On Fleet Comments----------------------------
+45) new field will be add of vehicle list to assosiate comments
+
+----------New Item form----------------------------
+46) all mandatory  except by barcode
+    item type form is missing and on list page item type not cateogry
+----------Inventory Adjustment----------------------------
+47) all mandatory
+    quantity on hand is filled by the sum of all the receive order and filter by item
+    and new quantity = quantity in hand (+-) Adjust Quantity
+    Adjust qty By  can be is manually enter and can be  - or + value to validate if  Add or subtract
+-----------Stock Transfer---------------------
+48) all mandatory
+    To warehouse is from setup id and name
+    requested by and authorized by are list of employes group
+    Add item line should be at least one line
+    item id and from warehouse are searchable
+    can select form the items and warehouses
+    Quantity and Undelivered Quantity are manual entered
+    and undelivered cant be equal or greater from quantity
+    and the stock transfer is complete just when all  Undelivered Quantity are zero
+
+------------purchase order--------------
+49) all mandatory
+    purchase order num auto 
+    work order field and department field manual enter
+    Dropdown
+      terms = PIA Payment in advance
+Net 7 Payment seven days after invoice date
+Net 10 Payment ten days after invoice date
+Net 30 Payment 30 days after invoice date
+Net 60 Payment 60 days after invoice date
+Net 90 Payment 90 days after invoice date
+EOM End of month
+21 MFI 21st of the month following invoice date
+1% 10 Net 30 1% discount if payment received within ten days otherwise payment 30 days after invoice date
+COD Cash on delivery
+Cash account Account conducted on a cash basis, no credit
+Letter of credit A documentary credit confirmed by a bank, often used for export
+Bill of exchange A promise to pay at a later date, usually supported by a bank
+CND Cash next delivery
+CBS Cash before shipment
+CIA Cash in advance
+CWO Cash with order
+1MD Monthly credit payment of a full month's supply
+2MD As above plus an extra calendar month
+Contra Payment from the customer offset against the value of supplies purchased from the customer

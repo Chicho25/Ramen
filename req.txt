@@ -1,0 +1,7 @@
+----Questionaier new form Quanty options box, palet, dozen
+    First eliminate cft and.cbm fields on Total box
+
+----Quote new form 
+   filter for the selected customer Questionary Id
+   Rate  x vKg
+   is vKg instead of vLb when select questionar
