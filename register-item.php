@@ -1,17 +1,17 @@
-<?php 
+<?php
 
     ob_start();
     $inventoryclass="class='active'";
     $registerItemclass="class='active'";
-    
-    include("include/config.php"); 
-    include("include/defs.php"); 
-    $loggdUType = current_user_type();
-    
-    
-    include("header.php"); 
 
-    if(!isset($_SESSION['USER_ID'])) 
+    include("include/config.php");
+    include("include/defs.php");
+    $loggdUType = current_user_type();
+
+
+    include("header.php");
+
+    if(!isset($_SESSION['USER_ID']))
      {
           header("Location: index.php");
           exit;
@@ -19,8 +19,8 @@
      $message="";
 
     if(isset($_POST['submitUser']))
-     {       
-        
+     {
+
           $arrVal = array(
                         "description" => $description,
                         "id_type" => $itemtype,
@@ -32,14 +32,14 @@
                         "stat" => 1
                        );
 
-          $nId = InsertRec("items", $arrVal);    
+          $nId = InsertRec("items", $arrVal);
 
           if($nId > 0)
           {
-              
+
               $message = '<div class="alert alert-success">
                     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                      <strong>Item created successfully</strong>
+                      <strong>Item Creado con exito!</strong>
                     </div>';
 
                 echo '<script>
@@ -49,19 +49,16 @@
           }
           else
           {
-            
 
             $message = '<div class="alert alert-danger">
-                  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                    <strong>Item not created</strong>
-                  </div>';
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                          <strong>Item no fue creado!</strong>
+                        </div>';
           }
-        
-          
-        
+
      }
 ?>
-  <?php 
+  <?php
       $bcName = "Register Item";
       include("breadcrumb.php") ;
     ?>
@@ -70,22 +67,22 @@
         <div class="col-lg-12">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        <h5>Register Item</h5>
+                        <h5>Registrar Item</h5>
                     </div>
                     <div class="ibox-content">
                 	<form class="form-horizontal" data-validate="parsley" method="post"   enctype="multipart/form-data">
-                          <?php 
+                          <?php
                                 if($message !="")
                                     echo $message;
-                          ?> 
+                          ?>
                             <div class="form-group required">
-                              <label class="col-lg-4 text-right control-label font-bold">Description</label>
+                              <label class="col-lg-4 text-right control-label font-bold">Descripcion</label>
                               <div class="col-lg-4">
-                                <input type="text" class="form-control" required=""   name="description">                        
-                              </div>  
+                                <input type="text" class="form-control" required=""   name="description">
+                              </div>
                             </div>
                             <div class="form-group required">
-                              <label class="col-lg-4 text-right control-label font-bold">Item Type</label>
+                              <label class="col-lg-4 text-right control-label font-bold">Item Tipo</label>
                               <div class="col-lg-4">
                                   <select class="chosen-select form-control" name="itemtype" required="required" >
                                     <?PHP
@@ -102,49 +99,49 @@
                               </div>
                             </div>
                             <div class="form-group required">
-                              <label class="col-lg-4 text-right control-label font-bold">Manufacturer</label>
+                              <label class="col-lg-4 text-right control-label font-bold">Manofactura</label>
                               <div class="col-lg-4">
-                                <input type="text" class="form-control" required=""   name="manufacturer">                        
-                              </div>  
+                                <input type="text" class="form-control" required=""   name="manufacturer">
+                              </div>
                             </div>
                             <div class="form-group required">
-                              <label class="col-lg-4 text-right control-label font-bold">Manufacturer Part#</label>
+                              <label class="col-lg-4 text-right control-label font-bold">Manofactura Parte#</label>
                               <div class="col-lg-4">
-                                <input type="text" class="form-control" required=""   name="manufacturernumber">                        
-                              </div>  
+                                <input type="text" class="form-control" required=""   name="manufacturernumber">
+                              </div>
                             </div>
                             <div class="form-group required">
-                              <label class="col-lg-4 text-right control-label font-bold">Unit Of Measure</label>
+                              <label class="col-lg-4 text-right control-label font-bold">Unidad de medida</label>
                               <div class="col-lg-4">
-                                <input type="text" class="form-control" required=""   name="unitofmeasure">                        
-                              </div>  
+                                <input type="text" class="form-control" required=""   name="unitofmeasure">
+                              </div>
                             </div>
                             <div class="form-group required">
-                              <label class="col-lg-4 text-right control-label font-bold">Last Unit Cost</label>
+                              <label class="col-lg-4 text-right control-label font-bold">Ultimo costo unitario</label>
                               <div class="col-lg-4">
-                                <input type="text" class="form-control" required=""   name="lastunitcost">                        
-                              </div>  
+                                <input type="text" class="form-control" required=""   name="lastunitcost">
+                              </div>
                             </div>
                             <div class="form-group required">
-                              <label class="col-lg-4 text-right control-label font-bold">Barcode</label>
+                              <label class="col-lg-4 text-right control-label font-bold">Codigo de barra</label>
                               <div class="col-lg-4">
-                                <input type="text" class="form-control" required=""   name="barcode">                        
-                              </div>  
+                                <input type="text" class="form-control" required=""   name="barcode">
+                              </div>
                             </div>
-                            
+
                           <div class="form-group">
                             <div class="col-sm-4 col-sm-offset-4">
-                                <button class="btn btn-primary" name="submitUser" type="submit">Save</button>
-                                <button class="btn btn-white" type="button" onclick="window.location='home.php'">Cancel</button>
+                                <button class="btn btn-primary" name="submitUser" type="submit">Guardar</button>
+                                <button class="btn btn-white" type="button" onclick="window.location='home.php'">Cancelar</button>
                             </div>
                           </div>
                     </form>
                   </div>
                 </div>
             </div>
-        </div>    
+        </div>
     </div>
-    
-<?php    
-	include("footer.php"); 
-?> 
+
+<?php
+	include("footer.php");
+?>

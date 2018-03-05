@@ -1,43 +1,43 @@
 <?php
     ob_start();
     session_start();
-    include("include/config.php"); 
-    include("include/defs.php"); 
-    
+    include("include/config.php");
+    include("include/defs.php");
+
     // it will never let you open index(login) page if session is set
-     if(isset($_SESSION['USER_ID']) && $_SESSION['USER_ID'] !="") 
+     if(isset($_SESSION['USER_ID']) && $_SESSION['USER_ID'] !="")
      {
           header("Location: home.php");
           exit;
      }
-     
+
 
     $errMSG="";
-     
 
-     if( isset($_POST['btn-login']) ) { 
-        
+
+     if( isset($_POST['btn-login']) ) {
+
         $username = $_POST['username'];
-        $password = encryptIt($_POST['password']);
+        //$password = encryptIt($_POST['password']);
         $username = strip_tags(trim($username));
-        $password = strip_tags(trim($password));
+        $password = strip_tags(trim($_POST['password']));
 
-        
+
         if(RecCount("users", "user = '".$username."' and password = '".$password."' and stat = 1") > 0)
         {
-            
+
             $row = GetRecord("users", "user = '".$username."' and password = '".$password."' and stat = 1");
             $getRole = GetRecord("type_user", "id = ".$row['id_roll_user']." ");
 
             $_SESSION['USER_ID'] = $row['id'];
             $_SESSION['USER_NAME'] = $row['user'];
             $_SESSION['USER_ROLE'] = $getRole['name'];
-            
+
             header("Location: home.php");
 
         }
         else
-          $errMSG = '<div class="alert alert-danger"><a href="#" class="close" style="color:#000;" data-dismiss="alert">&times;</a><strong>Invalid Email or Password, Try again...!</strong></div>'; 
+          $errMSG = '<div class="alert alert-danger"><a href="#" class="close" style="color:#000;" data-dismiss="alert">&times;</a><strong>Invalid Email or Password, Try again...!</strong></div>';
      }
 ?>
 <!DOCTYPE html>
@@ -62,7 +62,7 @@
 
     <div class="middle-box text-center loginscreen animated fadeInDown">
         <div>
-            
+
             <p>Ramen.</p>
             <form class="m-t" role="form" method="POST">
                 <div class="form-group">
