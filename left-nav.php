@@ -326,6 +326,11 @@
                             Lista de Items
                           </a>
                         </li>
+                        <li <?php if(isset($reportinvclass)) echo $reportinvclass;?>>
+                          <a href="reporte_inventario.php">
+                            Inventario
+                          </a>
+                        </li>
                     </ul>
                 </li>
 
