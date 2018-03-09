@@ -37,6 +37,21 @@
           if($nId > 0)
           {
 
+            if(isset($_FILES['photo']) && $_FILES['photo']['tmp_name'] != "")
+            {
+                $target_dir = "photos_items/";
+                $target_file = $target_dir . basename($_FILES["photo"]["name"]);
+                $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+                $filename = $target_dir . $nId.".".$imageFileType;
+                $filenameThumb = $target_dir . $nId."_thumb.".$imageFileType;
+                if (move_uploaded_file($_FILES["photo"]["tmp_name"], $filename))
+                {
+                    makeThumbnailsWithGivenWidthHeight($target_dir, $imageFileType, $nId, 400, 400);
+
+                    UpdateRec("items", "id = ".$nId, array("photos" => $filenameThumb));
+                }
+            }
+
               $message = '<div class="alert alert-success">
                     <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                       <strong>Item Creado con exito!</strong>
@@ -122,6 +137,21 @@
                                 <input type="text" class="form-control" required=""   name="lastunitcost">
                               </div>
                             </div>
+                            <div class="form-group">
+                              <label class="col-lg-4 text-right control-label font-bold">Imagen</label>
+                              <div class="col-lg-4">
+                                  <div style="width:204px;
+                                              height:154px;
+                                              background-color: #cccccc;
+                                              border: solid 2px gray;
+                                              margin: 5px;">
+                                      <img id="img" src="#" style='width:200px; height:150px;display: none;' alt="your image" />
+                                  </div>
+                                  <label class="btn yellow btn-default">
+                                    Cargar Foto <input type="file" name="photo" style="display: none;" onchange="readURL(this);">
+                                  </label>
+                              </div>
+                            </div>
                             <div class="form-group required">
                               <label class="col-lg-4 text-right control-label font-bold">Codigo de barra</label>
                               <div class="col-lg-4">
@@ -141,7 +171,19 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+    function readURL(input) {
 
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#img').show().attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+          }
+      }
+    </script>
 <?php
 	include("footer.php");
 ?>

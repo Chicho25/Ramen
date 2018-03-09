@@ -253,7 +253,7 @@
                                                   <input type="text" class="form-control"    name="quantity" id="quantity">
                                                 </div>
                                               </div>
-                                              <div class="form-group required">
+                                              <div class="form-group">
                                                 <label class="col-lg-4 text-right control-label font-bold">Unidad de medida</label>
                                                 <div class="col-lg-4">
                                                   <select class="form-control" name="measureunit" id="measureunit">

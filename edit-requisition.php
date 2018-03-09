@@ -1,17 +1,17 @@
-<?php 
+<?php
 
     ob_start();
     $inventoryclass="class='active'";
     $editReqsclass="class='active'";
-    
-    include("include/config.php"); 
-    include("include/defs.php"); 
-    $loggdUType = current_user_type();
-    
-    
-    include("header.php"); 
 
-    if(!isset($_SESSION['USER_ID']) || $loggdUType == "User") 
+    include("include/config.php");
+    include("include/defs.php");
+    $loggdUType = current_user_type();
+
+
+    include("header.php");
+
+    if(!isset($_SESSION['USER_ID']) || $loggdUType == "User")
      {
           header("Location: index.php");
           exit;
@@ -20,7 +20,7 @@
      if(isset($_POST['submitUser']) && $_REQUEST['id'] > 0)
      {
           $stval = (isset($_POST['status'])) ? 1 : 0;
-          
+
           $arrVal = array(
 
                         "request_date" => $requestdate,
@@ -30,8 +30,8 @@
                         "notes" => $notes,
                         "stat" => $stval
                        );
-          
-          UpdateRec("requisition", "id=".$_REQUEST['id'], $arrVal);    
+
+          UpdateRec("requisition", "id=".$_REQUEST['id'], $arrVal);
           $nId=$_REQUEST['id'];
           if($nId > 0)
           {
@@ -39,7 +39,7 @@
               if(count($pricline) > 0)
               {
                 DeleteRec("requisition_detail", "id_req=".$nId);
-                foreach ($pricline as $key => $value) 
+                foreach ($pricline as $key => $value)
                 {
                   $expVal = explode("!", $value);
                   if(isset($expVal[0]))
@@ -62,17 +62,17 @@
                       <strong>Material Requisition updated successfully</strong>
                     </div>';
           }
-          
-          
-        
+
+
+
      }
 
      $arrUser = GetRecord("requisition", "id = ".$_REQUEST['id']);
      $status = ($arrUser['stat'] == 1) ? 'checked' : '';
-     
-     
+
+
 ?>
-  <?php 
+  <?php
       $bcName = "Requisition Edit";
       include("breadcrumb.php") ;
     ?>
@@ -85,12 +85,12 @@
                     </div>
                     <div class="ibox-content">
                 	<form class="form-horizontal" data-validate="parsley" method="post"   enctype="multipart/form-data">
-                        <?php 
+                        <?php
                                 if($message !="")
                                     echo $message;
                           ?>
                         <input type="hidden" value="<?php echo $arrUser['id']?>" name="id">
-                            
+
                             <div class="form-group required">
                               <label class="col-lg-4 text-right control-label font-bold">Warehouse</label>
                               <div class="col-lg-4">
@@ -117,13 +117,14 @@
                                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                         <input type="text" required="" class="form-control" name="requestdate" id="requestdate" value="<?php echo $arrUser['request_date']?>">
                                     </div>
-                                  
+
                                 </div>
                             </div>
-                           <div class="form-group required">
+                           <div class="form-group">
                               <label class="col-lg-4 text-right control-label font-bold">Work Order</label>
                               <div class="col-lg-4">
                                 <select class="chosen-select form-control"  name="wono" required="required" >
+                                  <option value="">Seleccionar</option>
                                     <?PHP
                                     $arrKindMeetings = GetRecords("Select * from workorder where stat=1 and id_status = 1");
                                     foreach ($arrKindMeetings as $value) {
@@ -136,13 +137,13 @@
                                     }
                                     ?>
                                   </select>
-                              </div>  
+                              </div>
                             </div>
                             <div class="form-group required">
                               <label class="col-lg-4 text-right control-label font-bold">Department</label>
                               <div class="col-lg-4">
-                                <input type="text" class="form-control" required="" value="<?php echo $arrUser['department']?>"  name="department">                        
-                              </div>  
+                                <input type="text" class="form-control" required="" value="<?php echo $arrUser['department']?>"  name="department">
+                              </div>
                             </div>
                             <div class="form-group required">
                               <label class="col-lg-4 text-right control-label font-bold">Request By</label>
@@ -155,26 +156,26 @@
                                     $kinId = $value['id'];
                                     $kinDesc = $value['firstname']." ".$value['lastname'];
                                     $selRoll = (isset($arrUser['request_by']) && $arrUser['request_by'] == $kinId) ? 'selected' : '';
-                                    
+
                                   ?>
                                   <option value="<?php echo $kinId?>" <?php echo $selRoll?>><?php echo $kinDesc?></option>
                                   <?php
                               }
                                   ?>
-                                </select>                   
-                              </div>  
+                                </select>
+                              </div>
                             </div>
                             <div class="form-group required">
                               <label class="col-lg-4 text-right control-label font-bold">Notes</label>
                               <div class="col-lg-4">
-                                <textarea rows="7" class="form-control" cols="44" name="notes" required=""  placeholder=""><?php echo $arrUser['notes']?></textarea>                      
-                              </div>  
+                                <textarea rows="7" class="form-control" cols="44" name="notes" required=""  placeholder=""><?php echo $arrUser['notes']?></textarea>
+                              </div>
                             </div>
                             <div class="form-group required">
                               <label class="col-lg-4 font-bold control-label">Active/Deactive</label>
                               <div class="col-lg-4">
                                   <input type="checkbox" class="js-switch" name="status" <?php echo $status?>>
-                                  
+
                               </div>
 
                             </div>
@@ -185,14 +186,14 @@
                                 Add Item
                                 </a>
                               </div>
-                            </div>  
+                            </div>
                             <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
                                 <div class="modal-dialog">
                                 <div class="modal-content animated bounceInRight">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                                             <h4 class="modal-title">Add Item</h4>
-                                            
+
                                         </div>
                                         <div class="modal-body">
                                             <div class="row">
@@ -218,30 +219,30 @@
                                               <div class="form-group required" id="itmdesc" style="display: none;">
                                                 <label class="col-lg-4 text-right control-label font-bold">Description</label>
                                                 <div class="col-lg-4">
-                                                  <input type="text" class="form-control"    name="description" id="description">                        
-                                                </div>  
+                                                  <input type="text" class="form-control"    name="description" id="description">
+                                                </div>
                                               </div>
                                               <div class="form-group required">
                                                 <label class="col-lg-4 text-right control-label font-bold">Stock</label>
                                                 <div class="col-lg-4">
-                                                  <input type="text" class="form-control" readonly="" required=""   name="qtyinhand" id="qtyinhand">                        
-                                                </div>  
+                                                  <input type="text" class="form-control" readonly="" required=""   name="qtyinhand" id="qtyinhand">
+                                                </div>
                                               </div>
                                               <div class="form-group required">
                                                 <label class="col-lg-4 text-right control-label font-bold">Quantity</label>
                                                 <div class="col-lg-4">
-                                                  <input type="text" class="form-control"    name="quantity" id="quantity">                        
-                                                </div>  
+                                                  <input type="text" class="form-control"    name="quantity" id="quantity">
+                                                </div>
                                               </div>
                                               <div class="form-group required">
                                                 <label class="col-lg-4 text-right control-label font-bold">Unit of Measure</label>
                                                 <div class="col-lg-4">
-                                                  <input type="text" class="form-control"   name="measureunit" id="measureunit">                        
-                                                </div>  
+                                                  <input type="text" class="form-control"   name="measureunit" id="measureunit">
+                                                </div>
                                               </div>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
                                             <button type="button" onclick="getReqItemDetail()" class="btn btn-primary">Add</button>
@@ -263,18 +264,18 @@
                                 </tr>
                               </thead>
                               <tbody>
-                                <?php 
+                                <?php
                                 $arrOppDetail = GetRecords("select requisition_detail.* from requisition_detail
                                                              where id_req = ".$arrUser['id']);
                                 foreach ($arrOppDetail as $key => $value) {
-                                  
+
                                   $hdata = $value['id_item']."!".$value['stock']."!".$value['qty']."!".$value['buy']."!".$value['itmdesc']."!".$value['unitmeasure'];
                                   if($value['id_item'] == -1)
                                     $itm = "Not in Inventory";
                                   else
                                     $itm = $value['id_item'];
                                 ?>
-                                    
+
                                     <tr>
                                       <input type='hidden' name='h1[]' value='<?php echo $hdata?>'>
                                       <td><?php echo $itm?></td>
@@ -301,9 +302,9 @@
                   </div>
                 </div>
             </div>
-        </div>    
+        </div>
     </div>
-    
-<?php    
-	include("footer.php"); 
-?> 
+
+<?php
+	include("footer.php");
+?>

@@ -17,6 +17,31 @@
 
      $message = "";
 
+     if (isset($_POST['imagen'])) {
+
+       $nId = $_POST['id'];
+
+       if(isset($_FILES['photo']) && $_FILES['photo']['tmp_name'] != "")
+       {
+           $target_dir = "photos_items/";
+           $target_file = $target_dir . basename($_FILES["photo"]["name"]);
+           $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+           $filename = $target_dir . $nId.".".$imageFileType;
+           $filenameThumb = $target_dir . $nId."_thumb.".$imageFileType;
+           if (move_uploaded_file($_FILES["photo"]["tmp_name"], $filename))
+           {
+               makeThumbnailsWithGivenWidthHeight($target_dir, $imageFileType, $nId, 400, 400);
+
+               UpdateRec("items", "id = ".$nId, array("photos" => $filenameThumb));
+           }
+
+           $message = '<div class="alert alert-success">
+                       <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                         <strong>Imagen Actualizada</strong>
+                       </div>';
+       }
+     }
+
      if (isset($_POST['id_item'])){
        if($_POST['n_cantidad']!=''){
          $array_cant = array("m_min_stock"=>$_POST['n_cantidad']);
@@ -110,6 +135,7 @@
                             <table class="table table-striped table-bordered table-hover dataTables-example">
                               <thead>
                                 <tr>
+                                  <th>Imagen</th>
                                   <th>Item Id</th>
                                   <th>Descripcion</th>
                                   <th>Disponibles</th>
@@ -130,6 +156,9 @@
                                   $cantidad_items = cantidadEnInventario($value['id']);
                                 ?>
                               <tr>
+                                  <td class="tbdata"> <a title="Actualizar Monto" data-toggle="modal" data-target="#modal_photo<?php echo $value["id"]; ?>">
+                                    <img src="<?php if($value['photos'] != ''){ echo $value['photos']; }else{ echo 'photos_items/no_image.png';} ?>" width="50"></a>
+                                  </td>
                                   <td class="tbdata"> <?php echo $value['id']?> </td>
                                   <td class="tbdata"> <?php echo $value['description']?> </td>
                                   <td class="tbdata"> <?php echo $cantidad_items;?> </td>
@@ -138,7 +167,7 @@
                                   <td class="tbdata"> <?php echo $value['typename']?> </td>
                                   <td><button type="button" onclick="window.location='edit-item.php?id=<?php echo $value['id']?>';" class="btn green btn-info">Edit</button>
                                       <button type="button" onclick="window.location='view-item.php?id=<?php echo $value['id']?>';" class="btn green btn-info">View</button>
-                                      
+
                                   </td>
                               </tr>
 
@@ -169,6 +198,44 @@
                                   </form>
                                 </div>
                               </div>
+
+                              <div class="modal fade" id="modal_photo<?php echo $value["id"]; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                  <form class="" action="" method="post" enctype="multipart/form-data">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h5 class="modal-title" id="exampleModalLabel">Imagen de Item</h5>
+                                      <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                      </button>
+                                    </div>
+                                    <div class="modal-body">
+                                      <img id="img<?php echo $value["id"]; ?>" src="<?php if($value['photos'] != ''){ echo $value['photos']; }else{ echo 'photos_items/no_image.png';} ?>" alt="" width="300" style="display:block; margin:auto;">
+                                      <label class="btn yellow btn-default">
+                                        Cargar Foto <input type="file" name="photo" style="display: none;" onchange="readURL<?php echo $value["id"]; ?>(this);">
+                                      </label>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <input type="hidden" name="id" value="<?php echo $value["id"]; ?>">
+                                      <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                                      <button class="btn btn-primary" name="imagen">Actualizar</button>
+                                    <script type="text/javascript">
+                                      function readURL<?php echo $value["id"]; ?>(input) {
+                                          if (input.files && input.files[0]) {
+                                              var reader = new FileReader();
+                                              reader.onload = function (e) {
+                                                  $('#img<?php echo $value["id"]; ?>').show().attr('src', e.target.result);
+                                              }
+                                              reader.readAsDataURL(input.files[0]);
+                                          }
+                                      }
+                                    </script>
+                                    </div>
+                                  </div>
+                                  </form>
+                                </div>
+                              </div>
+
                               <?php
                                 $i++;
                               }
@@ -181,20 +248,7 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript">
-    function readURL(input) {
 
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-                $('#img').show().attr('src', e.target.result);
-            }
-
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-  </script>
 <?php
   include("footer.php");
 ?>
