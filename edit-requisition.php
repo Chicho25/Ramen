@@ -123,7 +123,7 @@
                            <div class="form-group">
                               <label class="col-lg-4 text-right control-label font-bold">Work Order</label>
                               <div class="col-lg-4">
-                                <select class="chosen-select form-control"  name="wono" required="required" >
+                                <select class="chosen-select form-control"  name="wono">
                                   <option value="">Seleccionar</option>
                                     <?PHP
                                     $arrKindMeetings = GetRecords("Select * from workorder where stat=1 and id_status = 1");
