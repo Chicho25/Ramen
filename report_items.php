@@ -30,7 +30,7 @@
            $filenameThumb = $target_dir . $nId."_thumb.".$imageFileType;
            if (move_uploaded_file($_FILES["photo"]["tmp_name"], $filename))
            {
-               makeThumbnailsWithGivenWidthHeight($target_dir, $imageFileType, $nId, 400, 400);
+               makeThumbnailsWithGivenWidthHeight($target_dir, $imageFileType, $nId, 1000, 1000);
 
                UpdateRec("items", "id = ".$nId, array("photos" => $filenameThumb));
            }

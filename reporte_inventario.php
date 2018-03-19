@@ -9,24 +9,13 @@
 
     include("header.php");
 
-    if(!isset($_SESSION['USER_ID']) || $loggdUType == "User")
+    if(!isset($_SESSION['USER_ID']))
      {
           header("Location: index.php");
           exit;
      }
 
      $message = "";
-
-     if (isset($_POST['id_item'])){
-       if($_POST['n_cantidad']!=''){
-         $array_cant = array("m_min_stock"=>$_POST['n_cantidad']);
-        UpdateRec("items", "id=".$_POST['id_item'], $array_cant);
-        $message = '<div class="alert alert-success">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                      <strong>Actualizado con Exito</strong>
-                    </div>';
-      }
-     }
 
     $where = "where (1=1)";
 		$where2 = "where (1=1)";
@@ -46,12 +35,67 @@
 
       if(isset($_POST['id_type']) && $_POST['id_type'] == 1)
       {
-        $where.=" and inventory_adjustment.stat = 1";
+        $where.="";
         $id_type = $_POST['id_type'];
-      }elseif(isset($_POST['id_type']) && $_POST['id_type'] == 0){
+      }elseif(isset($_POST['id_type']) && $_POST['id_type'] == 2){
 				$where2.=" and requisition.stat = 1";
 				$id_type = $_POST['id_type'];
 			}
+
+      if(isset($_POST['id_type_item']) && $_POST['id_type_item'] != '')
+      {
+        $where.=" and items.id_type =".$_POST['id_type_item'];
+        $where2.=" and items.id_type =".$_POST['id_type_item'];
+        $id_type_items = $_POST['id_type_item'];
+      }
+
+      if(isset($id_type) && $id_type == 1){
+
+        $arrUser = GetRecords("select
+  																inventory_adjustment.date as fecha,
+  																inventory_adjustment.reason as motivo,
+  																location.description as localidad,
+  																inventory_adjustment.reference as referencia,
+  																items.description as nombre_item,
+  																inventory_adjustment.qty as cantidad_ingresada_solicitada,
+  																inventory_adjustment.qty_in_hand as cantidad_actual,
+  																inventory_adjustment.qty_new as nueva_cantidad_restante,
+  																inventory_adjustment.value,
+  																'Ingreso' as stat,
+  																1 as tipo,
+  																'-' as nombre,
+  																'-' as apellido
+  																from
+  																inventory_adjustment inner join items on items.id = inventory_adjustment.id_item
+  																					 					 inner join location on location.id = inventory_adjustment.id_warehouse
+  																$where
+  																order by 1 desc");
+
+      }elseif(isset($id_type) && $id_type == 2){
+
+        $arrUser = GetRecords("select
+  																requisition.request_date as fecha,
+  																requisition.notes as motivo,
+  																location.description as localidad,
+  																requisition.department as referencia,
+  																items.description as nombre_item,
+  																requisition_detail.qty as cantidad_ingresada_solicitada,
+  																requisition_detail.stock as cantidad_actual,
+  																(requisition_detail.stock - requisition_detail.qty) as nueva_cantidad_restante,
+  																'-' as value,
+  																'Salida' as stat,
+  																0 as tipo,
+  																employee.firstname as nombre,
+  																employee.lastname as apellido
+  																from requisition inner join location on location.id = requisition.id_warehouse
+  																				 				 inner join employee on employee.id = requisition.request_by
+  																                 inner join requisition_detail on requisition.id = requisition_detail.id_req
+  																                 inner join items on requisition_detail.id_item = items.id
+  																$where2
+  																order by 1 desc");
+
+      }else{
+
       $arrUser = GetRecords("(select
 																inventory_adjustment.date as fecha,
 																inventory_adjustment.reason as motivo,
@@ -90,7 +134,7 @@
 																                 inner join requisition_detail on requisition.id = requisition_detail.id_req
 																                 inner join items on requisition_detail.id_item = items.id
 																$where2)
-																order by 1 desc");?>
+																order by 1 desc"); } ?>
      <?php
       $bcName = "Items List";
       include("breadcrumb.php") ;
@@ -104,19 +148,36 @@
                         <h5>Inventario</h5>
                     </div>
                     <div class="ibox-content">
-                      <form method="post">
+                      <form method="post" action="pdf_orco_comunidad.php" target="_blank">
                         <div class="row wrapper ">
-                          <div class="col-sm-3 pull-left">
+                          <div class="col-sm-1 pull-left">
                             <span class="input-group-btn padder ">
-                              <button type="button" class="btn btn-success btn-rounded">PDF</button>
+                              <button type="submit" class="btn btn-success btn-rounded">PDF</button>
+                              <input type="hidden" name="id_type" value="<?php if(isset($_POST['id_type'])){  echo $_POST['id_type'];}?>">
+                              <input type="hidden" name="id_type_item" value="<?php if(isset($_POST['id_type_item'])){ echo $_POST['id_type_item'];}?>">
+                              <input type="hidden" name="desde" value="<?php if(isset($_POST['desde'])){  echo $_POST['desde'];}?>">
+                              <input type="hidden" name="hasta" value="<?php if(isset($_POST['hasta'])){  echo $_POST['hasta'];}?>">
                             </span>
                           </div>
+                        </form>
+                        <form method="post">
                           <div class="col-sm-2 m-b-xs pull-left">
-                            <div class="input-group">
+                            <div class="input-group">Ingreso/Salida
                               <select class="form-control" name="id_type">
                                 <option value="">Seleccionar</option>
                                 <option value="1" <?php if (isset($id_type) && $id_type == 1) { echo 'selected';} ?>>Ingreso</option>
-																<option value="0" <?php if (isset($id_type) && $id_type == 0) { echo 'selected';} ?>>Salida</option>
+																<option value="2" <?php if (isset($id_type) && $id_type == 2) { echo 'selected';} ?>>Salida</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-sm-2 m-b-xs pull-left">
+                            <div class="input-group">Tipo
+                              <select class="form-control" name="id_type_item">
+                                <option value="">Seleccionar</option>
+                                <?php $tipos = GetRecords("SELECT * FROM item_types"); ?>
+                                <?php foreach($tipos as $key => $value){ ?>
+                                <option value="<?php echo $value['id']; ?>" <?php if(isset($id_type_items) && $id_type_items == $value['id']){ echo 'selected';}?>><?php echo $value['description']; ?></option>
+                                <?php } ?>
                               </select>
                             </div>
                           </div>
