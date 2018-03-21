@@ -31,7 +31,8 @@
                         "qty_new" => $addqty,
                         "reason" => $reason,
                         "entry_by" => $_SESSION['USER_ID'],
-                        "value"=>$price
+                        "value"=>$price,
+                        "type"=>$type
                        );
 
           $nId = InsertRec("inventory_adjustment", $arrVal);
@@ -104,6 +105,16 @@
                                     <?php
                                     }
                                     ?>
+                                  </select>
+                              </div>
+                            </div>
+                            <div class="form-group required">
+                              <label class="col-lg-4 text-right control-label font-bold">Tipo</label>
+                              <div class="col-lg-4">
+                                  <select class="chosen-select form-control" onchange="getQtyInHand()" name="type" id="itemid" required="required" >
+                                    <option value="">Seleccionar</option>
+                                    <option value="1">Compra</option>
+                                    <option value="2">Ajuste</option>
                                   </select>
                               </div>
                             </div>

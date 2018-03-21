@@ -35,12 +35,12 @@
 
       if(isset($_POST['id_type']) && $_POST['id_type'] == 1)
       {
-        $where.="";
+        $where.=" and inventory_adjustment.type = 1";
         $id_type = $_POST['id_type'];
       }elseif(isset($_POST['id_type']) && $_POST['id_type'] == 2){
-				$where2.=" and requisition.stat = 1";
-				$id_type = $_POST['id_type'];
-			}
+        $where.="  and inventory_adjustment.type = 2";
+        $id_type = $_POST['id_type'];
+      }
 
       if(isset($_POST['id_type_item']) && $_POST['id_type_item'] != '')
       {
@@ -52,19 +52,21 @@
       if(isset($id_type) && $id_type == 1){
 
         $arrUser = GetRecords("select
-  																inventory_adjustment.date as fecha,
-  																inventory_adjustment.reason as motivo,
-  																location.description as localidad,
-  																inventory_adjustment.reference as referencia,
-  																items.description as nombre_item,
-  																inventory_adjustment.qty as cantidad_ingresada_solicitada,
-  																inventory_adjustment.qty_in_hand as cantidad_actual,
-  																inventory_adjustment.qty_new as nueva_cantidad_restante,
-  																inventory_adjustment.value,
-  																'Ingreso' as stat,
-  																1 as tipo,
-  																'-' as nombre,
-  																'-' as apellido
+                                  inventory_adjustment.date as fecha,
+                                  inventory_adjustment.reason as motivo,
+                                  location.description as localidad,
+                                  inventory_adjustment.reference as referencia,
+                                  items.description as nombre_item,
+                                  items.manufacturer_num as codigo_barra,
+                                  inventory_adjustment.qty as cantidad_ingresada_solicitada,
+                                  inventory_adjustment.qty_in_hand as cantidad_actual,
+                                  inventory_adjustment.qty_new as nueva_cantidad_restante,
+                                  inventory_adjustment.value,
+                                  inventory_adjustment.type,
+                                  'Ingreso' as stat,
+                                  1 as tipo,
+                                  '-' as nombre,
+                                  '-' as apellido
   																from
   																inventory_adjustment inner join items on items.id = inventory_adjustment.id_item
   																					 					 inner join location on location.id = inventory_adjustment.id_warehouse
@@ -74,24 +76,25 @@
       }elseif(isset($id_type) && $id_type == 2){
 
         $arrUser = GetRecords("select
-  																requisition.request_date as fecha,
-  																requisition.notes as motivo,
-  																location.description as localidad,
-  																requisition.department as referencia,
-  																items.description as nombre_item,
-  																requisition_detail.qty as cantidad_ingresada_solicitada,
-  																requisition_detail.stock as cantidad_actual,
-  																(requisition_detail.stock - requisition_detail.qty) as nueva_cantidad_restante,
-  																'-' as value,
-  																'Salida' as stat,
-  																0 as tipo,
-  																employee.firstname as nombre,
-  																employee.lastname as apellido
-  																from requisition inner join location on location.id = requisition.id_warehouse
-  																				 				 inner join employee on employee.id = requisition.request_by
-  																                 inner join requisition_detail on requisition.id = requisition_detail.id_req
-  																                 inner join items on requisition_detail.id_item = items.id
-  																$where2
+                                  inventory_adjustment.date as fecha,
+                                  inventory_adjustment.reason as motivo,
+                                  location.description as localidad,
+                                  inventory_adjustment.reference as referencia,
+                                  items.description as nombre_item,
+                                  items.manufacturer_num as codigo_barra,
+                                  inventory_adjustment.qty as cantidad_ingresada_solicitada,
+                                  inventory_adjustment.qty_in_hand as cantidad_actual,
+                                  inventory_adjustment.qty_new as nueva_cantidad_restante,
+                                  inventory_adjustment.value,
+                                  inventory_adjustment.type,
+                                  'Ingreso' as stat,
+                                  1 as tipo,
+                                  '-' as nombre,
+                                  '-' as apellido
+  																from
+  																inventory_adjustment inner join items on items.id = inventory_adjustment.id_item
+  																					 					 inner join location on location.id = inventory_adjustment.id_warehouse
+  																$where
   																order by 1 desc");
 
       }else{
@@ -102,10 +105,12 @@
 																location.description as localidad,
 																inventory_adjustment.reference as referencia,
 																items.description as nombre_item,
+                                items.manufacturer_num as codigo_barra,
 																inventory_adjustment.qty as cantidad_ingresada_solicitada,
 																inventory_adjustment.qty_in_hand as cantidad_actual,
 																inventory_adjustment.qty_new as nueva_cantidad_restante,
 																inventory_adjustment.value,
+                                inventory_adjustment.type,
 																'Ingreso' as stat,
 																1 as tipo,
 																'-' as nombre,
@@ -121,10 +126,12 @@
 																location.description as localidad,
 																requisition.department as referencia,
 																items.description as nombre_item,
+                                items.manufacturer_num as codigo_barra,
 																requisition_detail.qty as cantidad_ingresada_solicitada,
 																requisition_detail.stock as cantidad_actual,
 																(requisition_detail.stock - requisition_detail.qty) as nueva_cantidad_restante,
 																'-' as value,
+                                '2' as type,
 																'Salida' as stat,
 																0 as tipo,
 																employee.firstname as nombre,
@@ -148,7 +155,7 @@
                         <h5>Inventario</h5>
                     </div>
                     <div class="ibox-content">
-                      <form method="post" action="pdf_orco_comunidad.php" target="_blank">
+                      <form method="post" action="pdf_report_inventario.php" target="_blank">
                         <div class="row wrapper ">
                           <div class="col-sm-1 pull-left">
                             <span class="input-group-btn padder ">
@@ -162,11 +169,11 @@
                         </form>
                         <form method="post">
                           <div class="col-sm-2 m-b-xs pull-left">
-                            <div class="input-group">Ingreso/Salida
+                            <div class="input-group">Compra/Ajuste
                               <select class="form-control" name="id_type">
                                 <option value="">Seleccionar</option>
-                                <option value="1" <?php if (isset($id_type) && $id_type == 1) { echo 'selected';} ?>>Ingreso</option>
-																<option value="2" <?php if (isset($id_type) && $id_type == 2) { echo 'selected';} ?>>Salida</option>
+                                <option value="1" <?php if (isset($id_type) && $id_type == 1) { echo 'selected';} ?>>Compra</option>
+																<option value="2" <?php if (isset($id_type) && $id_type == 2) { echo 'selected';} ?>>Ajuste</option>
                               </select>
                             </div>
                           </div>
@@ -215,13 +222,13 @@
                                 <tr>
                                   <th>Fecha</th>
                                   <th>Motivo</th>
-                                  <th>Localidad</th>
+                                  <th>Codigo</th>
                                   <th>Item</th>
 																	<th>Costo</th>
-																	<th>Tipo</th>
-                                  <th>C. Ingresada</th>
-                                  <th>C. Solicitada</th>
+																	<th>Compra</th>
                                   <th>Stock</th>
+                                  <th>Salida</th>
+                                  <th>Ajuste</th>
 																	<th>Actual</th>
 																	<th>Solisitado Por</th>
                                 </tr>
@@ -233,14 +240,14 @@
                               <tr>
                                   <td class="tbdata"> <?php echo $value['fecha']?> </td>
                                   <td class="tbdata"> <?php echo $value['motivo']?> </td>
-                                  <td class="tbdata"> <?php echo $value['localidad']?> </td>
+                                  <td class="tbdata"> <?php echo $value['codigo_barra']?> </td>
                                   <td class="tbdata"> <?php echo $value['nombre_item']?> </td>
                                   <td class="tbdata"> <?php echo $value['value']?> </td>
-                                  <td class="tbdata"> <?php echo $value['stat']?> </td>
-                                  <td class="tbdata"> <?php echo $value['cantidad_ingresada_solicitada']?> </td>
-																	<td class="tbdata"> <?php echo $value['cantidad_ingresada_solicitada']?> </td>
-																	<td class="tbdata"> <?php echo $value['cantidad_actual']?> </td>
-																	<td class="tbdata"> <?php echo $value['nueva_cantidad_restante']?> </td>
+                                  <td class="tbdata"> <?php if($value['type'] == 1){ echo $value['cantidad_ingresada_solicitada']; }else{ echo '-'; }?> </td>
+                                  <td class="tbdata"> <?php echo $value['cantidad_actual']?> </td>
+																	<td class="tbdata"> <?php if($value['tipo']==0){ echo $value['cantidad_ingresada_solicitada']; }else{ echo '-'; }?> </td>
+																	<td class="tbdata"> <?php if($value['type'] == 2){ echo $value['cantidad_ingresada_solicitada']; }else{ echo '-'; }?> </td>
+																	<td class="tbdata"> <?php echo $value['nueva_cantidad_restante'];//echo $value['cantidad_actual'] ?> </td>
 																	<td class="tbdata"> <?php echo $value['nombre'].' '.$value['apellido']?> </td>
                               </tr>
                               <?php } ?>
