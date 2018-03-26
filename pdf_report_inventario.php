@@ -57,6 +57,8 @@ $where2 = "where (1=1)";
                               inventory_adjustment inner join items on items.id = inventory_adjustment.id_item
                                                    inner join location on location.id = inventory_adjustment.id_warehouse
                               $where
+                              and
+                              inventory_adjustment.stat = 0
                               order by 1 desc");
 
   }elseif(isset($id_type) && $id_type == 2){
@@ -81,6 +83,8 @@ $where2 = "where (1=1)";
                               inventory_adjustment inner join items on items.id = inventory_adjustment.id_item
                                                    inner join location on location.id = inventory_adjustment.id_warehouse
                               $where
+                              and
+                              inventory_adjustment.stat = 0
                               order by 1 desc");
 
   }else{
@@ -105,6 +109,8 @@ $where2 = "where (1=1)";
                             inventory_adjustment inner join items on items.id = inventory_adjustment.id_item
                                                  inner join location on location.id = inventory_adjustment.id_warehouse
                             $where
+                            and
+                            inventory_adjustment.stat = 0
                             )union(
                             select
                             requisition.request_date as fecha,

@@ -20,6 +20,12 @@
      if(isset($_POST['messaje']))
       {
 
+          if (isset($_POST['stat'])) {
+            $status = 0;
+          }else{
+            $status = 1;
+          }
+
            $arrVal = array(
                          "id_item" => $_POST['itemid'],
                          "id_warehouse" => $_POST['warehouse'],
@@ -32,7 +38,8 @@
                          "reason" => $_POST['reason'],
                          "entry_by" => $_SESSION['USER_ID'],
                          "value"=>$_POST['price'],
-                         "type"=>$_POST['type']
+                         "type"=>$_POST['type'],
+                         "stat"=>$status
                         );
 
            if(UpdateRec("inventory_adjustment", "id=".$_POST['id_ajustament'], $arrVal))
@@ -122,6 +129,7 @@
                                   <th>N# Orden</th>
                                   <th>Cantidad</th>
                                   <th>Motivo</th>
+                                  <th>Status</th>
                                   <th>Acciones</th>
                                 </tr>
                               </thead>
@@ -151,6 +159,7 @@
                                   <td class="tbdata"> <?php echo $value['order_no']?> </td>
                                   <td class="tbdata"> <?php echo $value['qty']?> </td>
                                   <td class="tbdata"> <?php echo $value['reason']?> </td>
+                                  <td class="tbdata"> <?php if($value['stat'] == 0){ echo 'Activo';}else{ echo 'Desactivo';} ?> </td>
                                   <td>
                                     <a href="ajustes.php?id=<?php echo $value["id"]; ?>" class="btn btn-primary" title="Actualizar" data-toggle="ajaxModal">Ver/Editar</a>
                                   </td>

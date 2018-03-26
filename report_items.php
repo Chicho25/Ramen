@@ -42,6 +42,16 @@
        }
      }
 
+     if(isset($_POST['comentary_form'])){
+       $comentary = array("comentary"=>$_POST['comentary']);
+       UpdateRec("items", "id=".$_POST['id_comentary'], $comentary);
+
+       $message = '<div class="alert alert-success">
+                   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                     <strong>Comentario Agregado</strong>
+                   </div>';
+     }
+
      if (isset($_POST['id_item'])){
        if($_POST['n_cantidad']!=''){
          $array_cant = array("m_min_stock"=>$_POST['n_cantidad']);
@@ -165,11 +175,34 @@
                                   <td class="tbdata"> <a title="Actualizar Monto" data-toggle="modal" data-target="#modal_cant<?php echo $value["id"]; ?>"><?php echo $value['m_min_stock']; ?></a> </td>
                                   <td class="tbdata"> <?php echo $cantidad_items-$value['m_min_stock'];?> </td>
                                   <td class="tbdata"> <?php echo $value['typename']?> </td>
-                                  <td><button type="button" onclick="window.location='edit-item.php?id=<?php echo $value['id']?>';" class="btn green btn-info">Edit</button>
-                                      <button type="button" onclick="window.location='view-item.php?id=<?php echo $value['id']?>';" class="btn green btn-info">View</button>
-
+                                  <td><button type="button" onclick="window.location='edit-item.php?id=<?php echo $value['id']?>';" class="btn green btn-info"><li class="glyphicon glyphicon-pencil"></li></button>
+                                      <button type="button" onclick="window.location='view-item.php?id=<?php echo $value['id']?>';" class="btn green btn-info"> <li class="glyphicon glyphicon-eye-open"></li></button>
+                                      <a class="btn green btn-info" title="Actualizar Monto" data-toggle="modal" data-target="#modal_comentary<?php echo $value["id"]; ?>"><li class="glyphicon glyphicon-copy"></li></a>
                                   </td>
                               </tr>
+
+                              <div class="modal fade" id="modal_comentary<?php echo $value["id"]; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                  <form class="" action="" method="post">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h5 class="modal-title" id="exampleModalLabel">Agregar un Comentario</h5>
+                                      <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                      </button>
+                                    </div>
+                                    <div class="modal-body">
+                                      <textarea class="form-control" name="comentary" rows="8" cols="80"><?php echo $value['comentary'];?></textarea>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <input type="hidden" name="id_comentary" value="<?php echo $value["id"]; ?>">
+                                      <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                                      <button class="btn btn-primary" name="comentary_form">Guardar</button>
+                                    </div>
+                                  </div>
+                                  </form>
+                                </div>
+                              </div>
 
                               <div class="modal fade" id="modal_cant<?php echo $value["id"]; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">

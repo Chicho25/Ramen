@@ -114,6 +114,13 @@ $arrUser = GetRecords("SELECT * FROM inventory_adjustment WHERE id =".$_GET['id'
               <textarea rows="7" class="form-control" cols="44" name="reason" required=""  placeholder=""><?php echo $arrUser[0]['reason'];?></textarea>
             </div>
           </div>
+          <div class="form-group required">
+            <?php $status = ($arrUser[0]['stat'] == 0) ? 'checked' : ''; ?>
+            <label class="col-lg-4 text-right control-label font-bold">Active/Deactive</label>
+            <div class="col-lg-8">
+                <input type="checkbox" class="js-switch" name="stat" <?php echo $status;?>>
+            </div>
+          </div>
       </div>
       <div class="modal-footer">
         <input type="hidden" name="id_ajustament" value="<?php echo $_GET['id']; ?>">
